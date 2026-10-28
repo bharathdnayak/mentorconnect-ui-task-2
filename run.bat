@@ -52,9 +52,9 @@ echo.
 echo ========================================================================
 echo   Development Login Credentials (Password: Password123!)
 echo ========================================================================
-echo   [1] HOD Administrator:  hod.cse@college.edu
+echo   [1] HOD Administrator:  hod.ise@college.edu
 echo   [2] Faculty Mentor:     dr.sharma@college.edu
-echo   [3] Student Mentee:     bharath.cs@college.edu
+echo   [3] Student Mentee:     bharath.is@college.edu
 echo ========================================================================
 echo.
 echo [Starting] Launching Backend API (port 5000) and Web Frontend (port 5173)...
