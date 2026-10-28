@@ -277,4 +277,39 @@ describe('MentorConnect Backend API & Security Suite', () => {
       expect(JSON.stringify(notes)).not.toContain('CONFIDENTIAL');
     });
   });
+
+  // ==========================================
+  // 6. DEPLOYMENT & HEALTH CHECKS
+  // ==========================================
+  describe('Deployment & Health Verification', () => {
+    it('responds to /health probe for Render container monitoring', async () => {
+      const res = await request(app).get('/health');
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe('UP');
+      expect(res.body.service).toBe('MentorConnect API');
+    });
+
+    it('responds to versioned /api/v1/health probe', async () => {
+      const res = await request(app).get('/api/v1/health');
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe('UP');
+    });
+
+    it('handles unknown routes with a clean 404 JSON response', async () => {
+      const res = await request(app).get('/api/v1/non-existent-route');
+      expect(res.status).toBe(404);
+      expect(res.body.success).toBe(false);
+      expect(res.body.message).toContain('Endpoint not found');
+    });
+
+    it('allows CORS from Netlify frontend domain and localhost', async () => {
+      const res = await request(app)
+        .options('/api/v1/health')
+        .set('Origin', 'https://mentorconnect-ui.netlify.app')
+        .set('Access-Control-Request-Method', 'GET');
+
+      expect(res.status).toBe(204);
+      expect(res.headers['access-control-allow-origin']).toBe('https://mentorconnect-ui.netlify.app');
+    });
+  });
 });

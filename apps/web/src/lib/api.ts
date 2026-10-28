@@ -1,4 +1,6 @@
-const BASE_URL = (import.meta as any).env?.VITE_API_URL || '/api/v1';
+// Normalize API base URL: handles empty, trailing slashes, and ensures /api/v1 prefix
+const rawBaseUrl = ((import.meta as any).env?.VITE_API_URL || '/api/v1').trim().replace(/\/+$/, '');
+const BASE_URL = rawBaseUrl.endsWith('/api/v1') ? rawBaseUrl : `${rawBaseUrl}/api/v1`;
 
 export class ApiError extends Error {
   statusCode: number;

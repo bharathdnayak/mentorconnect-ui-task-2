@@ -1,0 +1,14 @@
+# Netlify Configuration for MentorConnect Frontend
+
+[build]
+  publish = "apps/web/dist"
+  command = "npm run build -w packages/shared && npm run build -w apps/web"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# SPA Fallback for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

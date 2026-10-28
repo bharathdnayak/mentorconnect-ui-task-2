@@ -26,10 +26,34 @@ export function createApp() {
   // Security headers
   app.use(helmet());
 
-  // CORS configuration
+  // CORS configuration supporting single or comma-separated origins and Netlify deployments
+  const configuredOrigins = config.corsOrigin
+    ? config.corsOrigin.split(',').map((o) => o.trim()).filter(Boolean)
+    : [];
+
+  const defaultOrigins = ['http://localhost:5173', 'http://127.0.0.1:5173'];
+  const allowedOrigins = Array.from(new Set([...configuredOrigins, ...defaultOrigins]));
+
   app.use(
     cors({
-      origin: [config.corsOrigin, 'http://localhost:5173', 'http://127.0.0.1:5173'],
+      origin: (origin, callback) => {
+        // Allow requests with no origin (e.g. mobile apps, curl, uptime/health checks)
+        if (!origin) return callback(null, true);
+
+        // Check explicit allowed origins list
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+
+        // Allow any Netlify and Render hosted subdomains
+        if (
+          origin.endsWith('.netlify.app') ||
+          origin.endsWith('.onrender.com') ||
+          process.env.NODE_ENV !== 'production'
+        ) {
+          return callback(null, true);
+        }
+
+        return callback(null, false);
+      },
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization'],

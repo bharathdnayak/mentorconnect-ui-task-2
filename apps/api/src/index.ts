@@ -7,7 +7,7 @@ async function bootstrap() {
 
   const app = createApp();
 
-  const server = app.listen(config.port, () => {
+  const server = app.listen(config.port, '0.0.0.0', () => {
     console.log(`=======================================================`);
     console.log(`MentorConnect API Server running on port ${config.port}`);
     console.log(`Environment: ${config.nodeEnv}`);
