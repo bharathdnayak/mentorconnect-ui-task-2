@@ -2,8 +2,8 @@
 
 > **Academic Project Submission**: 7th Semester UI Task-2 / Full-Stack Enterprise Engineering  
 > **Repository**: [https://github.com/bharathdnayak/mentorconnect-ui-task-2.git](https://github.com/bharathdnayak/mentorconnect-ui-task-2.git)  
-> **Student Author**: Bharath D. Nayak (USN: `4NM23CS042`)  
-> **Department**: Computer Science & Engineering  
+> **Student Author**: Bharath D. Nayak (USN: `NNM23IS033`)  
+> **Department**: Information Science & Engineering  
 > **Institution**: NMAM Institute of Technology, Nitte  
 
 ---
@@ -204,19 +204,19 @@ All development accounts are pre-seeded with the password: **`Password123!`**
 
 | Role | Email | Password | Description |
 | :--- | :--- | :--- | :--- |
-| **HOD Administrator** | `hod.cse@college.edu` | `Password123!` | Department Head with full administrative & audit controls |
+| **HOD Administrator** | `hod.ise@college.edu` | `Password123!` | Department Head with full administrative & audit controls |
 | **Faculty Mentor 1** | `dr.sharma@college.edu` | `Password123!` | Professor (Cloud & Distributed Systems Lead) |
 | **Faculty Mentor 2** | `prof.anita@college.edu` | `Password123!` | Associate Professor (Full-Stack & UI/UX Specialist) |
 | **Faculty Mentor 3** | `dr.vikram@college.edu` | `Password123!` | Associate Professor (AI & Machine Learning Lab Incharge) |
-| **Student Mentee 1** | `bharath.cs@college.edu` | `Password123!` | 7th Sem CSE Student (Assigned to Dr. Sharma) |
-| **Student Mentee 2** | `priya.cs@college.edu` | `Password123!` | 5th Sem CSE Student (Assigned to Prof. Anita) |
+| **Student Mentee 1** | `bharath.is@college.edu` | `Password123!` | 7th Sem ISE Student (Assigned to Dr. Sharma) |
+| **Student Mentee 2** | `priya.is@college.edu` | `Password123!` | 5th Sem ISE Student (Assigned to Prof. Anita) |
 | **Student Mentee 3** | `kavya.ai@college.edu` | `Password123!` | 3rd Sem AIML Student (Unassigned mentee for pairing tests) |
 
 ---
 
 ## 10. Automated Testing Suite
 
-Execute the comprehensive automated test suite (covering authentication, RBAC boundaries, note privacy, capacity enforcement, CSV exports, and prompt recording):
+Execute the comprehensive automated test suite (covering authentication, RBAC boundaries, note privacy, capacity enforcement, CSV exports, deployment probes, and prompt recording):
 
 ```bash
 # Run all tests
@@ -226,10 +226,10 @@ npm test
 ### Verified Test Results:
 ```text
  ✓ tests/prompt-recorder.test.ts (5 tests)
- ✓ tests/api.test.ts (15 tests)
+ ✓ tests/api.test.ts (19 tests)
 
  Test Files  2 passed (2)
-      Tests  20 passed (20)
+      Tests  24 passed (24)
 ```
 
 ---
@@ -272,7 +272,7 @@ To uphold academic authenticity and provide college evaluators with a verifiable
 ---
 
 ## 14. Academic Context & Attributions
-- **Course**: 7th Semester B.E. Computer Science & Engineering
+- **Course**: 7th Semester B.E. Information Science & Engineering
 - **Task**: UI Task-2 (Student–Faculty Mentoring Platform)
-- **Guided by**: Department of Computer Science & Engineering, NMAMIT
+- **Guided by**: Department of Information Science & Engineering, NMAMIT
 - **License**: MIT

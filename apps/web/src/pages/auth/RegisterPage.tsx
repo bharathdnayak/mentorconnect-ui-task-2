@@ -19,7 +19,7 @@ export function RegisterPage() {
   const [usn, setUsn] = useState('');
   const [departmentId, setDepartmentId] = useState('');
   const [semester, setSemester] = useState(1);
-  const [degree, setDegree] = useState('B.E. Computer Science & Engineering');
+  const [degree, setDegree] = useState('B.E. Information Science & Engineering');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -105,7 +105,7 @@ export function RegisterPage() {
                 />
                 <Input
                   label="Student ID / USN"
-                  placeholder="e.g. 4NM23CS001"
+                  placeholder="e.g. NNM23IS001"
                   required
                   value={usn}
                   onChange={(e) => setUsn(e.target.value)}

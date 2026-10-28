@@ -30,6 +30,15 @@ async function main() {
   const passwordHash = await bcrypt.hash('Password123!', 10);
 
   // 1. Departments
+  const deptIse = await prisma.department.create({
+    data: {
+      code: 'ISE',
+      name: 'Information Science & Engineering',
+      description: 'Department of Information Science & Engineering',
+      active: true,
+    },
+  });
+
   const deptCse = await prisma.department.create({
     data: {
       code: 'CSE',
@@ -44,15 +53,6 @@ async function main() {
       code: 'AIML',
       name: 'Artificial Intelligence & Machine Learning',
       description: 'Department of AI & Data Science',
-      active: true,
-    },
-  });
-
-  const deptIse = await prisma.department.create({
-    data: {
-      code: 'ISE',
-      name: 'Information Science & Engineering',
-      description: 'Department of Information Science & Systems',
       active: true,
     },
   });
@@ -81,7 +81,7 @@ async function main() {
   // 4. HOD Administrator User
   const hodUser = await prisma.user.create({
     data: {
-      email: 'hod.cse@college.edu',
+      email: 'hod.ise@college.edu',
       passwordHash,
       role: Role.HOD,
       isActive: true,
@@ -101,11 +101,11 @@ async function main() {
   const mentor1Profile = await prisma.mentorProfile.create({
     data: {
       userId: mentor1User.id,
-      facultyId: 'FAC-CSE-001',
+      facultyId: 'FAC-ISE-001',
       fullName: 'Dr. Ramesh Sharma',
       designation: 'Professor & Senior Research Lead',
       phone: '+91 98765 43210',
-      departmentId: deptCse.id,
+      departmentId: deptIse.id,
       expertise: ['Cloud Computing', 'Distributed Systems', 'Software Architecture', 'DevOps'],
       technicalSkills: ['Kubernetes', 'Docker', 'Go', 'AWS', 'System Design'],
       researchInterests: ['High-Performance Computing', 'Microservices Reliability'],
@@ -128,11 +128,11 @@ async function main() {
   const mentor2Profile = await prisma.mentorProfile.create({
     data: {
       userId: mentor2User.id,
-      facultyId: 'FAC-CSE-002',
+      facultyId: 'FAC-ISE-002',
       fullName: 'Prof. Anita Rao',
       designation: 'Associate Professor',
       phone: '+91 98765 43211',
-      departmentId: deptCse.id,
+      departmentId: deptIse.id,
       expertise: ['Full-Stack Web Development', 'Database Systems', 'Mobile App Development'],
       technicalSkills: ['React', 'Node.js', 'PostgreSQL', 'TypeScript', 'Tailwind CSS'],
       researchInterests: ['Human-Computer Interaction', 'Modern Web Architectures'],
@@ -174,7 +174,7 @@ async function main() {
   // Student 1: Assigned to Dr. Sharma
   const student1User = await prisma.user.create({
     data: {
-      email: 'bharath.cs@college.edu',
+      email: 'bharath.is@college.edu',
       passwordHash,
       role: Role.STUDENT,
       isActive: true,
@@ -184,20 +184,20 @@ async function main() {
   const student1Profile = await prisma.studentProfile.create({
     data: {
       userId: student1User.id,
-      usn: '4NM23CS042',
+      usn: 'NNM23IS033',
       fullName: 'Bharath D. Nayak',
       phone: '+91 91234 56789',
-      degree: 'B.E. Computer Science & Engineering',
+      degree: 'B.E. Information Science & Engineering',
       semester: 7,
       section: 'A',
       academicYear: '2026-2027',
-      departmentId: deptCse.id,
+      departmentId: deptIse.id,
       hobbies: 'Competitive Programming, Open Source Contributing, Technical Blogging',
       technicalSkills: ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'Docker'],
       careerGoals: ['Full-Stack Software Engineer', 'Cloud Systems Architect'],
       guidanceNeeds: ['System Design Preparation', 'Final Year Project Guidance', 'Higher Studies'],
       preferredTopics: ['Distributed Systems', 'Cloud Native Development', 'Resume & Interview Prep'],
-      bio: 'Final year CSE undergraduate passionate about building scalable, responsive web applications and full-stack software architectures.',
+      bio: 'Final year ISE undergraduate passionate about building scalable, responsive web applications and full-stack software architectures.',
       profileCompleted: true,
     },
   });
@@ -205,7 +205,7 @@ async function main() {
   // Student 2: Assigned to Prof. Anita Rao
   const student2User = await prisma.user.create({
     data: {
-      email: 'priya.cs@college.edu',
+      email: 'priya.is@college.edu',
       passwordHash,
       role: Role.STUDENT,
       isActive: true,
@@ -215,14 +215,14 @@ async function main() {
   const student2Profile = await prisma.studentProfile.create({
     data: {
       userId: student2User.id,
-      usn: '4NM23CS098',
+      usn: 'NNM23IS098',
       fullName: 'Priya Hegde',
       phone: '+91 92345 67890',
-      degree: 'B.E. Computer Science & Engineering',
+      degree: 'B.E. Information Science & Engineering',
       semester: 5,
       section: 'B',
       academicYear: '2026-2027',
-      departmentId: deptCse.id,
+      departmentId: deptIse.id,
       hobbies: 'UI/UX Design, Chess, Volunteering',
       technicalSkills: ['Figma', 'React', 'CSS', 'JavaScript'],
       careerGoals: ['Frontend Engineer', 'Product Designer'],
@@ -236,7 +236,7 @@ async function main() {
   // Student 3: Assigned to Dr. Sharma
   const student3User = await prisma.user.create({
     data: {
-      email: 'aditya.cs@college.edu',
+      email: 'aditya.is@college.edu',
       passwordHash,
       role: Role.STUDENT,
       isActive: true,
@@ -246,14 +246,14 @@ async function main() {
   const student3Profile = await prisma.studentProfile.create({
     data: {
       userId: student3User.id,
-      usn: '4NM23CS015',
+      usn: 'NNM23IS015',
       fullName: 'Aditya Shenoy',
       phone: '+91 93456 78901',
-      degree: 'B.E. Computer Science & Engineering',
+      degree: 'B.E. Information Science & Engineering',
       semester: 7,
       section: 'A',
       academicYear: '2026-2027',
-      departmentId: deptCse.id,
+      departmentId: deptIse.id,
       hobbies: 'Robotics, IoT Hardware, Gaming',
       technicalSkills: ['Go', 'Docker', 'Linux', 'C++'],
       careerGoals: ['DevOps Engineer', 'Site Reliability Engineer'],
@@ -302,7 +302,7 @@ async function main() {
       mentorId: mentor1Profile.id,
       academicTermId: currentTerm.id,
       status: AssignmentStatus.ACTIVE,
-      assignedBy: 'HOD CSE',
+      assignedBy: 'HOD ISE',
       notes: 'Assigned based on shared interest in distributed systems and cloud architecture.',
     },
   });
@@ -313,7 +313,7 @@ async function main() {
       mentorId: mentor2Profile.id,
       academicTermId: currentTerm.id,
       status: AssignmentStatus.ACTIVE,
-      assignedBy: 'HOD CSE',
+      assignedBy: 'HOD ISE',
       notes: 'Assigned for frontend, UI/UX, and web development guidance.',
     },
   });
@@ -324,7 +324,7 @@ async function main() {
       mentorId: mentor1Profile.id,
       academicTermId: currentTerm.id,
       status: AssignmentStatus.ACTIVE,
-      assignedBy: 'HOD CSE',
+      assignedBy: 'HOD ISE',
       notes: 'Assigned for cloud and infrastructure mentoring.',
     },
   });
@@ -361,7 +361,7 @@ async function main() {
       scheduledAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
       durationMinutes: 45,
       meetingType: MeetingType.IN_PERSON,
-      location: 'Faculty Cabin #304, CSE Block',
+      location: 'Faculty Cabin #304, ISE Block',
       agenda: 'Review final year project topic, microservice architecture design, and database schema.',
       status: MeetingStatus.COMPLETED,
       followUpDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
@@ -417,7 +417,7 @@ async function main() {
       durationMinutes: 30,
       meetingType: MeetingType.HYBRID,
       location: 'Faculty Cabin #304 / Google Meet',
-      meetingLink: 'https://meet.google.com/xyz-mentor-cse',
+      meetingLink: 'https://meet.google.com/xyz-mentor-ise',
       agenda: 'Check completed action items, evaluate frontend-backend integration, and verify role-based test coverage.',
       status: MeetingStatus.SCHEDULED,
     },
@@ -456,7 +456,7 @@ async function main() {
       targetRole: 'ALL',
       priority: Priority.IMPORTANT,
       authorId: hodUser.id,
-      departmentId: deptCse.id,
+      departmentId: deptIse.id,
     },
   });
 
@@ -467,7 +467,7 @@ async function main() {
       targetRole: 'STUDENT',
       priority: Priority.URGENT,
       authorId: hodUser.id,
-      departmentId: deptCse.id,
+      departmentId: deptIse.id,
     },
   });
 
@@ -513,9 +513,9 @@ async function main() {
       action: 'MENTOR_ASSIGNED',
       entityType: 'MentorAssignment',
       details: {
-        studentUsn: '4NM23CS042',
+        studentUsn: 'NNM23IS033',
         studentName: 'Bharath D. Nayak',
-        facultyId: 'FAC-CSE-001',
+        facultyId: 'FAC-ISE-001',
         mentorName: 'Dr. Ramesh Sharma',
       },
       ipAddress: '127.0.0.1',
@@ -525,12 +525,12 @@ async function main() {
   console.log('[Seed] Database successfully seeded with realistic sample data!');
   console.log('------------------------------------------------------------');
   console.log('Development Credentials for Testing:');
-  console.log('1. HOD Admin:      hod.cse@college.edu        / Password123!');
+  console.log('1. HOD Admin:      hod.ise@college.edu        / Password123!');
   console.log('2. Mentor 1:       dr.sharma@college.edu      / Password123!');
   console.log('3. Mentor 2:       prof.anita@college.edu     / Password123!');
   console.log('4. Mentor 3:       dr.vikram@college.edu      / Password123!');
-  console.log('5. Student 1:      bharath.cs@college.edu     / Password123!');
-  console.log('6. Student 2:      priya.cs@college.edu       / Password123!');
+  console.log('5. Student 1:      bharath.is@college.edu     / Password123!');
+  console.log('6. Student 2:      priya.is@college.edu       / Password123!');
   console.log('7. Student (Unass):kavya.ai@college.edu       / Password123!');
   console.log('------------------------------------------------------------');
 }

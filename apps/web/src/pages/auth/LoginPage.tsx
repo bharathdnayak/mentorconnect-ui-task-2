@@ -113,12 +113,12 @@ export function LoginPage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <button
                   type="button"
-                  onClick={() => handleQuickLogin('hod.cse@college.edu')}
+                  onClick={() => handleQuickLogin('hod.ise@college.edu')}
                   className="flex flex-col items-center p-2.5 rounded-lg border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/50 transition-all text-center group"
                 >
                   <ShieldCheck className="w-4 h-4 text-indigo-600 mb-1" />
                   <span className="text-xs font-semibold text-slate-800">HOD Admin</span>
-                  <span className="text-[10px] text-slate-400">hod.cse@</span>
+                  <span className="text-[10px] text-slate-400">hod.ise@</span>
                 </button>
 
                 <button
@@ -133,12 +133,12 @@ export function LoginPage() {
 
                 <button
                   type="button"
-                  onClick={() => handleQuickLogin('bharath.cs@college.edu')}
+                  onClick={() => handleQuickLogin('bharath.is@college.edu')}
                   className="flex flex-col items-center p-2.5 rounded-lg border border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 transition-all text-center group"
                 >
                   <GraduationCap className="w-4 h-4 text-blue-600 mb-1" />
                   <span className="text-xs font-semibold text-slate-800">Student</span>
-                  <span className="text-[10px] text-slate-400">bharath.cs@</span>
+                  <span className="text-[10px] text-slate-400">bharath.is@</span>
                 </button>
               </div>
             </div>

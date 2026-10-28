@@ -251,7 +251,7 @@ export function HodMentorsPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input label="Full Name *" placeholder="e.g. Dr. Rajesh Kumar" value={fullName} onChange={(e) => setFullName(e.target.value)} />
-            <Input label="Faculty ID *" placeholder="e.g. FAC-CSE-004" value={facultyId} onChange={(e) => setFacultyId(e.target.value)} />
+            <Input label="Faculty ID *" placeholder="e.g. FAC-ISE-004" value={facultyId} onChange={(e) => setFacultyId(e.target.value)} />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -17,7 +17,7 @@ describe('MentorConnect Backend API & Security Suite', () => {
     // 1. Authenticate as Student
     const studentRes = await request(app)
       .post('/api/v1/auth/login')
-      .send({ email: 'bharath.cs@college.edu', password: 'Password123!' });
+      .send({ email: 'bharath.is@college.edu', password: 'Password123!' });
     expect(studentRes.status).toBe(200);
     studentToken = studentRes.body.data.accessToken;
     studentProfileId = studentRes.body.data.user.studentProfileId;
@@ -33,7 +33,7 @@ describe('MentorConnect Backend API & Security Suite', () => {
     // 3. Authenticate as HOD
     const hodRes = await request(app)
       .post('/api/v1/auth/login')
-      .send({ email: 'hod.cse@college.edu', password: 'Password123!' });
+      .send({ email: 'hod.ise@college.edu', password: 'Password123!' });
     expect(hodRes.status).toBe(200);
     hodToken = hodRes.body.data.accessToken;
   });
@@ -45,7 +45,7 @@ describe('MentorConnect Backend API & Security Suite', () => {
     it('rejects invalid login credentials with 401', async () => {
       const res = await request(app)
         .post('/api/v1/auth/login')
-        .send({ email: 'bharath.cs@college.edu', password: 'WrongPassword' });
+        .send({ email: 'bharath.is@college.edu', password: 'WrongPassword' });
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBe(false);
@@ -77,7 +77,7 @@ describe('MentorConnect Backend API & Security Suite', () => {
     it('allows valid token refresh', async () => {
       const loginRes = await request(app)
         .post('/api/v1/auth/login')
-        .send({ email: 'priya.cs@college.edu', password: 'Password123!' });
+        .send({ email: 'priya.is@college.edu', password: 'Password123!' });
 
       const refreshToken = loginRes.body.data.refreshToken;
       const refreshRes = await request(app)
@@ -99,7 +99,7 @@ describe('MentorConnect Backend API & Security Suite', () => {
         .set('Authorization', `Bearer ${studentToken}`);
 
       expect(getRes.status).toBe(200);
-      expect(getRes.body.data.usn).toBe('4NM23CS042');
+      expect(getRes.body.data.usn).toBe('NNM23IS033');
 
       const updateRes = await request(app)
         .put('/api/v1/students/profile')

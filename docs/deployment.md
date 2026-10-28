@@ -167,7 +167,7 @@ Verify full database read/write and persistence across browser refreshes and res
    - Verify the login screen renders.
 
 3. **Authentication & Account Provisioning**:
-   - **Method A (Seed Script Demonstration Accounts)**: If you executed `npx tsx prisma/seed.ts` in Step 2, the standard academic evaluation accounts (`hod.cse@college.edu`, `dr.sharma@college.edu`, `bharath.cs@college.edu`) are available using the password configured in `prisma/seed.ts`.
+   - **Method A (Seed Script Demonstration Accounts)**: If you executed `npx tsx prisma/seed.ts` in Step 2, the standard academic evaluation accounts (`hod.ise@college.edu`, `dr.sharma@college.edu`, `bharath.is@college.edu`) are available using the password configured in `prisma/seed.ts`.
    - **Method B (Self-Registration)**: Click **Register as Student Mentee** on the login page to create a new demonstration student profile with your own credentials and department selection.
 
 4. **Database Write Operation**:

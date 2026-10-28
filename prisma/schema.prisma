@@ -97,8 +97,8 @@ model User {
 
 model Department {
   id          String   @id @default(uuid())
-  code        String   @unique // e.g., 'CSE', 'ISE', 'AIML', 'ECE'
-  name        String   // e.g., 'Computer Science & Engineering'
+  code        String   @unique // e.g., 'ISE', 'CSE', 'AIML', 'ECE'
+  name        String   // e.g., 'Information Science & Engineering'
   description String?
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())

@@ -20,7 +20,7 @@ export const studentRegisterSchema = z.object({
   usn: z.string().min(3, 'Valid Student ID / USN is required'),
   departmentId: z.string().min(1, 'Department is required'),
   semester: z.number().int().min(1).max(8).default(1),
-  degree: z.string().default('B.E. Computer Science'),
+  degree: z.string().default('B.E. Information Science & Engineering'),
   section: z.string().optional(),
   academicYear: z.string().default('2026-2027'),
 });

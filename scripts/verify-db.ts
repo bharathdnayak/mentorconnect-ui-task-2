@@ -30,7 +30,7 @@ async function verify() {
   console.log(`- Users (Authentication Credentials): ${usersCount}`);
   console.log(`- Student Profiles (USN, Skills, Goals, Bio): ${studentsCount}`);
   console.log(`- Mentor Profiles (Faculty ID, Expertise, Quota): ${mentorsCount}`);
-  console.log(`- Departments (CSE, AIML, ISE): ${departmentsCount}`);
+  console.log(`- Departments (ISE, CSE, AIML): ${departmentsCount}`);
   console.log(`- Mentor Assignments (Active/Historical Pairings): ${assignmentsCount}`);
   console.log(`- Mentoring Sessions (Scheduled/Completed Meetings): ${sessionsCount}`);
   console.log(`- Meeting Notes (Private & Shared Notes): ${notesCount}`);
