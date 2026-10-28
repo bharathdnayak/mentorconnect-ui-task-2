@@ -1,0 +1,409 @@
+// Prisma Schema for MentorConnect
+// Production-Ready Mentor-Mentee Management System
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  MENTOR
+  HOD
+}
+
+enum MeetingStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  RESCHEDULED
+}
+
+enum MeetingType {
+  IN_PERSON
+  VIRTUAL
+  HYBRID
+}
+
+enum NoteVisibility {
+  PRIVATE_MENTOR
+  SHARED_STUDENT
+  SHARED_HOD
+}
+
+enum ActionItemStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum AssignmentStatus {
+  ACTIVE
+  REASSIGNED
+  COMPLETED
+}
+
+enum ChangeRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum RecommendationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum Priority {
+  NORMAL
+  IMPORTANT
+  URGENT
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ACTION_REQUIRED
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(STUDENT)
+  isActive     Boolean   @default(true)
+  lastLogin    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  studentProfile StudentProfile?
+  mentorProfile  MentorProfile?
+
+  authoredAnnouncements Announcement[] @relation("AnnouncementAuthor")
+  authoredNotes         MeetingNote[]  @relation("NoteAuthor")
+  auditLogs             AuditLog[]     @relation("AuditActor")
+  notifications         Notification[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model Department {
+  id          String   @id @default(uuid())
+  code        String   @unique // e.g., 'CSE', 'ISE', 'AIML', 'ECE'
+  name        String   // e.g., 'Computer Science & Engineering'
+  description String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  students      StudentProfile[]
+  mentors       MentorProfile[]
+  announcements Announcement[]
+
+  @@index([code])
+}
+
+model AcademicTerm {
+  id        String    @id @default(uuid())
+  name      String    // e.g., 'Fall 2026', 'Odd Semester 2026-27'
+  year      String    // e.g., '2026-2027'
+  semester  String    // e.g., '7th Semester', 'Odd'
+  startDate DateTime?
+  endDate   DateTime?
+  isCurrent Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  assignments MentorAssignment[]
+
+  @@index([isCurrent])
+}
+
+model StudentProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  usn             String   @unique // University Seat Number or Student ID
+  fullName        String
+  phone           String?
+  degree          String   @default("B.E.")
+  semester        Int      @default(1)
+  section         String?
+  academicYear    String   @default("2026-2027")
+  hobbies         String?
+  technicalSkills String[] @default([])
+  careerGoals     String[] @default([])
+  guidanceNeeds   String[] @default([])
+  preferredTopics String[] @default([])
+  bio             String?  @db.Text
+  avatarUrl       String?
+  profileCompleted Boolean @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Restrict)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  assignments     MentorAssignment[]
+  recommendations MentorRecommendation[]
+  changeRequests  MentorChangeRequest[]
+  sessions        MentoringSession[]
+  feedbacks       Feedback[]
+  actionItems     ActionItem[]
+
+  @@index([userId])
+  @@index([usn])
+  @@index([departmentId])
+  @@index([semester])
+}
+
+model MentorProfile {
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  facultyId          String   @unique
+  fullName           String
+  phone              String?
+  designation        String   // e.g., 'Professor', 'Associate Professor', 'Assistant Professor'
+  expertise          String[] @default([])
+  technicalSkills    String[] @default([])
+  researchInterests  String[] @default([])
+  mentoringInterests String[] @default([])
+  bio                String?  @db.Text
+  avatarUrl          String?
+  maxCapacity        Int      @default(10)
+  currentMenteeCount Int      @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Restrict)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  assignments          MentorAssignment[]
+  recommendations      MentorRecommendation[]
+  requestedChangeFrom  MentorChangeRequest[]  @relation("CurrentMentor")
+  requestedChangeTo    MentorChangeRequest[]  @relation("RequestedMentor")
+  sessions             MentoringSession[]
+  feedbacks            Feedback[]
+
+  @@index([userId])
+  @@index([facultyId])
+  @@index([departmentId])
+}
+
+model MentorAssignment {
+  id             String           @id @default(uuid())
+  studentId      String
+  mentorId       String
+  academicTermId String?
+  status         AssignmentStatus @default(ACTIVE)
+  assignedBy     String?          // User ID or name of HOD who made assignment
+  notes          String?          @db.Text
+  assignedAt     DateTime         @default(now())
+  endedAt        DateTime?
+
+  student      StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  mentor       MentorProfile  @relation(fields: [mentorId], references: [id], onDelete: Restrict)
+  academicTerm AcademicTerm?  @relation(fields: [academicTermId], references: [id], onDelete: SetNull)
+
+  @@index([studentId])
+  @@index([mentorId])
+  @@index([status])
+}
+
+model MentorRecommendation {
+  id               String               @id @default(uuid())
+  studentId        String
+  mentorId         String
+  matchScore       Int                  // 0 to 100
+  matchExplanation String               @db.Text
+  criteriaBreakdown Json?
+  recommendedBy    String?              // e.g., 'SYSTEM_ALGORITHM' or faculty ID
+  status           RecommendationStatus @default(PENDING)
+  reviewedAt       DateTime?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  mentor  MentorProfile  @relation(fields: [mentorId], references: [id], onDelete: Cascade)
+
+  @@index([studentId])
+  @@index([mentorId])
+  @@index([status])
+}
+
+model MentorChangeRequest {
+  id                String              @id @default(uuid())
+  studentId         String
+  currentMentorId   String?
+  requestedMentorId String?
+  reason            String              @db.Text
+  status            ChangeRequestStatus @default(PENDING)
+  reviewedBy        String?             // HOD User ID
+  reviewNotes       String?             @db.Text
+  createdAt         DateTime            @default(now())
+  reviewedAt        DateTime?
+
+  student         StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  currentMentor   MentorProfile? @relation("CurrentMentor", fields: [currentMentorId], references: [id], onDelete: SetNull)
+  requestedMentor MentorProfile? @relation("RequestedMentor", fields: [requestedMentorId], references: [id], onDelete: SetNull)
+
+  @@index([studentId])
+  @@index([status])
+}
+
+model MentoringSession {
+  id              String        @id @default(uuid())
+  title           String
+  studentId       String
+  mentorId        String
+  scheduledAt     DateTime
+  durationMinutes Int           @default(30)
+  meetingType     MeetingType   @default(IN_PERSON)
+  location        String?
+  meetingLink     String?
+  agenda          String        @db.Text
+  status          MeetingStatus @default(SCHEDULED)
+  followUpDate    DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  mentor  MentorProfile  @relation(fields: [mentorId], references: [id], onDelete: Restrict)
+
+  notes       MeetingNote[]
+  actionItems ActionItem[]
+  feedbacks   Feedback[]
+
+  @@index([studentId])
+  @@index([mentorId])
+  @@index([status])
+  @@index([scheduledAt])
+}
+
+model MeetingNote {
+  id         String         @id @default(uuid())
+  sessionId  String
+  authorId   String
+  visibility NoteVisibility @default(PRIVATE_MENTOR)
+  content    String         @db.Text
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  session MentoringSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  author  User             @relation("NoteAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([authorId])
+  @@index([visibility])
+}
+
+model ActionItem {
+  id          String           @id @default(uuid())
+  sessionId   String
+  studentId   String
+  description String           @db.Text
+  dueDate     DateTime?
+  status      ActionItemStatus @default(PENDING)
+  completedAt DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  session MentoringSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  student StudentProfile   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([studentId])
+  @@index([status])
+}
+
+model Announcement {
+  id           String     @id @default(uuid())
+  title        String
+  content      String     @db.Text
+  targetRole   String     @default("ALL") // "ALL", "STUDENT", "MENTOR"
+  priority     Priority   @default(NORMAL)
+  authorId     String
+  departmentId String?
+  expiresAt    DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  author     User        @relation("AnnouncementAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  department Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+
+  @@index([targetRole])
+  @@index([priority])
+  @@index([departmentId])
+}
+
+model Feedback {
+  id        String   @id @default(uuid())
+  sessionId String
+  studentId String
+  mentorId  String
+  rating    Int      // 1 to 5
+  comment   String   @db.Text
+  createdAt DateTime @default(now())
+
+  session MentoringSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  student StudentProfile   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  mentor  MentorProfile    @relation(fields: [mentorId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([studentId])
+  @@index([mentorId])
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  title     String
+  message   String           @db.Text
+  type      NotificationType @default(INFO)
+  link      String?
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  actorId    String?
+  actorRole  String?
+  action     String   // e.g. "MENTOR_ASSIGNED", "ACCOUNT_DEACTIVATED", "CHANGE_REQUEST_APPROVED"
+  entityType String   // e.g. "MentorAssignment", "User", "MentorChangeRequest"
+  entityId   String?
+  details    Json?    // Contextual payload
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  actor User? @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([actorId])
+  @@index([action])
+  @@index([entityType])
+  @@index([createdAt])
+}
+
+model SystemSetting {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       String   @db.Text
+  description String?
+  updatedAt   DateTime @updatedAt
+
+  @@index([key])
+}
