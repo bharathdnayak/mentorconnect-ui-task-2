@@ -87,7 +87,7 @@ npx tsx prisma/seed.ts
    - **Runtime**: `Node`
    - **Build Command**:
      ```bash
-     npm install && npx prisma generate && npm run build:api
+     npm install --include=dev && npx prisma generate && npm run build:api
      ```
    - **Start Command**:
      ```bash
