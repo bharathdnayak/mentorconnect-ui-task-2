@@ -9,7 +9,9 @@ async function verify() {
   console.log('  MentorConnect — PostgreSQL DBMS Verification Check');
   console.log('====================================================');
   console.log('Environment File: .env');
-  console.log('PostgreSQL Connection URL:', process.env.DATABASE_URL);
+  const rawUrl = process.env.DATABASE_URL || '';
+  const sanitizedUrl = rawUrl.replace(/:([^:@]+)@/, ':****@');
+  console.log('PostgreSQL Connection Target:', sanitizedUrl);
   console.log('----------------------------------------------------');
 
   const usersCount = await prisma.user.count();
@@ -52,9 +54,10 @@ async function verify() {
     console.log(`  Career Goals: ${sampleStudent.careerGoals.join(', ')}`);
   }
 
+  const host = rawUrl.includes('@') ? rawUrl.split('@')[1].split('/')[0] : 'localhost';
   console.log('====================================================');
-  console.log('STATUS: VERIFIED. All inputs and operations persist');
-  console.log('        directly in PostgreSQL on localhost:5432.');
+  console.log(`STATUS: VERIFIED. All queries executed against PostgreSQL`);
+  console.log(`        at ${host}.`);
   console.log('====================================================');
 }
 
